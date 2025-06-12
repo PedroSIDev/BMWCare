@@ -24,7 +24,10 @@ function setupRoutes(app, { userController, vehicleController, maintenanceContro
 
     // --- Rotas de Manutenção (Protegidas) ---
     router.post('/vehicles/:vehicleId/maintenances', maintenanceController.create.bind(maintenanceController));
-    // Adicionar rotas para GET, PUT e DELETE de manutenções aqui
+    // ADICIONE AS LINHAS ABAIXO
+    router.get('/vehicles/:vehicleId/maintenances', maintenanceController.listForVehicle.bind(maintenanceController));
+    router.put('/maintenances/:id', maintenanceController.update.bind(maintenanceController));
+    router.delete('/maintenances/:id', maintenanceController.delete.bind(maintenanceController));
 
     app.use('/api', router);
 }

@@ -1,8 +1,6 @@
-// Importações dos Casos de Uso
 const CreateVehicle = require('../../application/use-cases/vehicle/CreateVehicle');
 const ListVehicles = require('../../application/use-cases/vehicle/ListVehicles');
 const GetVehicleDetails = require('../../application/use-cases/vehicle/GetVehicleDetails');
-// Novas importações para Update e Delete
 const UpdateVehicle = require('../../application/use-cases/vehicle/UpdateVehicle');
 const DeleteVehicle = require('../../application/use-cases/vehicle/DeleteVehicle');
 
@@ -12,18 +10,34 @@ class VehicleController {
     this.maintenanceRepository = maintenanceRepository;
   }
 
+  // MÉTODO CREATE ATUALIZADO
   async create(req, res) {
     try {
-      const { model, year, plate } = req.body;
-      const ownerId = req.user.id;
+      // Agora pegamos também o ownerId que pode vir do corpo da requisição
+      const { model, year, plate, ownerId: ownerIdFromRequest } = req.body;
+
+      let ownerId;
+
+      // Lógica de permissão para definir o dono
+      if (req.user.role === 'admin' && ownerIdFromRequest) {
+        // Se o requisitante é admin e especificou um dono, usamos o especificado.
+        ownerId = ownerIdFromRequest;
+      } else {
+        // Para todos os outros casos, o dono é o próprio usuário logado.
+        ownerId = req.user.id;
+      }
+
       const createVehicle = new CreateVehicle(this.vehicleRepository);
       const vehicle = await createVehicle.execute({ model, year, plate, ownerId });
+      
       res.status(201).json(vehicle);
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
   }
 
+  // ... (seus outros métodos: list, getDetails, update, delete) permanecem iguais
+  
   async list(req, res) {
     try {
       const listVehicles = new ListVehicles(this.vehicleRepository);
@@ -47,11 +61,10 @@ class VehicleController {
     }
   }
 
-  // NOVO MÉTODO: UPDATE
   async update(req, res) {
     try {
       const { id } = req.params;
-      const updates = req.body; // Pega todos os dados do corpo
+      const updates = req.body;
       const updateVehicle = new UpdateVehicle(this.vehicleRepository);
       const updatedVehicle = await updateVehicle.execute({ vehicleId: id, updates, user: req.user });
       res.status(200).json(updatedVehicle);
@@ -62,7 +75,6 @@ class VehicleController {
     }
   }
 
-  // NOVO MÉTODO: DELETE
   async delete(req, res) {
     try {
       const { id } = req.params;
