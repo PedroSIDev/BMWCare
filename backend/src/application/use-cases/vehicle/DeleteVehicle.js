@@ -9,8 +9,8 @@ class DeleteVehicle {
       throw new Error('Veículo não encontrado.');
     }
 
-    if (user.role !== 'admin' && vehicle.ownerId !== user.id) {
-      throw new Error('Acesso negado.');
+    if (user.role !== 'admin') {
+      throw new Error('Acesso negado. Apenas administradores podem atualizar veículos.');
     }
 
     await this.vehicleRepository.delete(vehicleId);

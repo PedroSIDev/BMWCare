@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-const JWT_SECRET = 'segredo-super-secreto';
+const JWT_SECRET = 'MinhaBMWSuperSecreta@2025_FinalProject';
 
 class AuthService {
   async hashPassword(password) {

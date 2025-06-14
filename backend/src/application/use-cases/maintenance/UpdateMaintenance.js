@@ -16,8 +16,8 @@ class UpdateMaintenance {
       throw new Error('Veículo associado à manutenção não foi encontrado.');
     }
 
-    if (user.role !== 'admin' && vehicle.ownerId !== user.id) {
-      throw new Error('Acesso negado.');
+    if (user.role !== 'admin') {
+      throw new Error('Acesso negado. Apenas administradores podem atualizar veículos.');
     }
 
     Object.assign(maintenance, updates);
