@@ -1,77 +1,96 @@
-'use client'; // 1. Adicionado para permitir interatividade (hooks e eventos)
+"use client"
 
-import { ReactNode } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation'; // 2. Importado o useRouter
-import Cookies from 'js-cookie'; // 3. Importado o Cookies
-import { Button } from '@/components/ui/button';
-import { Car, Users, Wrench, LayoutDashboard, LogOut } from 'lucide-react'; // 4. Importado o ícone de Logout
+import * as React from "react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import Cookies from "js-cookie"
+import { Car, LayoutDashboard, Menu, PanelLeftClose, PanelLeftOpen, Users, Wrench } from "lucide-react"
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
-    // 5. Adicionada a lógica de logout dentro do layout
-    const router = useRouter();
+import { Nav } from "@/components/nav"
+import { NavUser } from "@/components/nav-user"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/ui/sidebar"
+import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { DynamicBreadcrumb } from "@/components/dynamic-breadcrumb"
+
+import { AdminStatsProvider } from "@/context/AdminStatsContext";
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+    const [isCollapsed, setIsCollapsed] = React.useState(false)
+    const router = useRouter()
+
     const handleLogout = () => {
-        Cookies.remove('auth_token');
-        router.push('/authpage');
-    };
+        Cookies.remove('auth_token')
+        router.push('/authpage')
+    }
+
+    const navItems = [
+        { title: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard, variant: "default" as const },
+        { title: "Usuários", href: "/admin/users", icon: Users, variant: "ghost" as const },
+        { title: "Veículos", href: "/admin/vehicles", icon: Car, variant: "ghost" as const },
+        { title: "Manutenções", href: "/admin/maintenances", icon: Wrench, variant: "ghost" as const },
+    ]
+
     return (
-        <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-            {/* Sidebar */}
-            <div className="hidden border-r border-zinc-800 bg-zinc-950 text-zinc-50 md:block">
-                <div className="flex h-full max-h-screen flex-col gap-2">
-                    <div className="flex h-14 items-center border-b border-zinc-800 px-4 lg:h-[60px] lg:px-6">
-                        <Link href="/admin/dashboard" className="flex items-center gap-3 font-semibold">
+        <AdminStatsProvider>
+            <div className="flex h-screen w-full bg-background">
+                {/* --- SIDEBAR PARA DESKTOP --- */}
+                <Sidebar isCollapsed={isCollapsed} className="hidden md:flex">
+                    {/* A MUDANÇA ESTÁ AQUI DENTRO */}
+                    <SidebarHeader className="flex items-center justify-between px-3">
+                        <Link href="/admin/dashboard" className="flex items-center gap-2 font-semibold">
                             <Car className="h-6 w-6" />
-                            <span>Painel Admin</span>
+                            {!isCollapsed && <span>Painel Admin</span>}
                         </Link>
-                    </div>
-                    <div className="flex-1 overflow-auto py-4">
-                        <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-                            <Link
-                                href="/admin/dashboard"
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-zinc-400 transition-all hover:text-zinc-50"
-                            >
-                                <LayoutDashboard className="h-4 w-4" />
-                                Dashboard
-                            </Link>
-                            <Link
-                                href="#" // Substitua pelo link real, ex: /admin/users
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-zinc-400 transition-all hover:text-zinc-50"
-                            >
-                                <Users className="h-4 w-4" />
-                                Gerenciar Usuários
-                            </Link>
-                            <Link
-                                href="#" // Substitua pelo link real, ex: /admin/vehicles
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-zinc-400 transition-all hover:text-zinc-50"
-                            >
-                                <Car className="h-4 w-4" />
-                                Gerenciar Veículos
-                            </Link>
-                            <Link
-                                href="#" // Substitua pelo link real, ex: /admin/maintenances
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-zinc-400 transition-all hover:text-zinc-50"
-                            >
-                                <Wrench className="h-4 w-4" />
-                                Gerenciar Manutenções
-                            </Link>
-                        </nav>
-                    </div>
-                    <div className="mt-auto border-t border-zinc-800 p-4">
-                        <Button onClick={handleLogout} variant="ghost" className="w-full justify-start gap-2">
-                            <LogOut className="h-4 w-4" />
-                            Sair (Logout)
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setIsCollapsed(!isCollapsed)}>
+                            {isCollapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
+                            <span className="sr-only">Toggle Sidebar</span>
                         </Button>
-                    </div>
+                    </SidebarHeader>
+
+                    <SidebarContent>
+                        <Nav isCollapsed={isCollapsed} links={navItems} />
+                    </SidebarContent>
+                    <SidebarFooter>
+                        <NavUser onLogout={handleLogout} />
+                    </SidebarFooter>
+                </Sidebar>
+
+                <div className="flex flex-1 flex-col">
+                    {/* --- CABEÇALHO DO CONTEÚDO PRINCIPAL --- */}
+                    <header className="flex h-14 items-center gap-4 border-b bg-background px-4 md:h-16">
+                        <Sheet>
+                            <SheetTrigger asChild>
+                                <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+                                    <Menu className="h-5 w-5" />
+                                    <span className="sr-only">Abrir menu de navegação</span>
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="left" className="flex flex-col p-0">
+                                <div className="flex h-14 items-center border-b px-4">
+                                    <Link href="/admin/dashboard" className="flex items-center gap-2 font-semibold">
+                                        <Car className="h-6 w-6" />
+                                        <span>Painel Admin</span>
+                                    </Link>
+                                </div>
+                                <div className="flex-1 overflow-auto py-4">
+                                    <Nav isCollapsed={false} links={navItems} />
+                                </div>
+                                <div className="mt-auto border-t p-2">
+                                    <NavUser onLogout={handleLogout} />
+                                </div>
+                            </SheetContent>
+                        </Sheet>
+
+                        <div className="w-full flex-1">
+                            <DynamicBreadcrumb />
+                        </div>
+                    </header>
+                    <main className="flex-1 overflow-y-auto p-4 md:p-6">
+                        {children}
+                    </main>
                 </div>
             </div>
-
-            {/* Conteúdo Principal */}
-            <div className="flex flex-col">
-                <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-                    {children}
-                </main>
-            </div>
-        </div>
-    );
+        </AdminStatsProvider>
+    )
 }

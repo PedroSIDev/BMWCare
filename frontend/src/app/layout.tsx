@@ -1,24 +1,11 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import { Toaster } from "@/components/ui/sonner"; // 1. IMPORTE O TOASTER AQUI
 
 export const metadata: Metadata = {
-  title: "BMW Maintenance System",
-  description: "BMW Maintenance System is a web application for managing vehicle maintenance tasks and records.",
+  title: "BMW Maintenance",
+  description: "Sistema de gerenciamento de manutenção",
 };
-
-
 
 export default function RootLayout({
   children,
@@ -26,11 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className="dark">
+      <body>
         {children}
+        <Toaster richColors position="top-right" /> {/* 2. ADICIONE O TOASTER AQUI */}
       </body>
     </html>
   );

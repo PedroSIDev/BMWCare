@@ -1,80 +1,67 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-// Não precisamos mais do useRouter e do Cookies aqui
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Users, Car } from 'lucide-react';
-import api from '@/lib/api'; // Certifique-se de que o caminho está correto
-
-interface Stats {
-    userCount: number;
-    vehicleCount: number;
-}
+import Link from 'next/link';
+import { useAdminStats } from '@/context/AdminStatsContext'; // 1. Importa o hook
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Users, Car, Wrench, ArrowUpRight } from 'lucide-react';
 
 export default function AdminDashboardPage() {
-    // A lógica de busca de dados permanece a mesma
-    const [stats, setStats] = useState<Stats | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    // 2. USA O HOOK para pegar os dados do "cofre" (Contexto)
+    const { stats, isLoading } = useAdminStats();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-            try {
-                const [usersResponse, vehiclesResponse] = await Promise.all([
-                    api.get('/users'),
-                    api.get('/vehicles')
-                ]);
-                setStats({
-                    userCount: usersResponse.data.length,
-                    vehicleCount: vehiclesResponse.data.length,
-                });
-            } catch (error) {
-                console.error("Falha ao buscar dados para o dashboard:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
+    // 3. NOTE: Não há mais useState ou useEffect aqui!
 
-    // A função handleLogout foi removida daqui
+    const statCards = [
+        {
+            title: "Total de Usuários",
+            count: stats?.userCount,
+            icon: Users,
+            href: "/admin/users"
+        },
+        {
+            title: "Total de Veículos",
+            count: stats?.vehicleCount,
+            icon: Car,
+            href: "/admin/vehicles"
+        },
+        {
+            title: "Total de Manutenções",
+            count: stats?.maintenanceCount,
+            icon: Wrench,
+            href: "/admin/maintenances"
+        }
+    ];
 
     return (
-        <>
-            {/* O CABEÇALHO AGORA É MAIS SIMPLES, SEM O BOTÃO DE LOGOUT */}
-            <div className="flex items-center">
-                <h1 className="text-lg font-semibold md:text-2xl">Dashboard</h1>
-            </div>
+        <div className="flex flex-col gap-4">
+            <h1 className="text-lg font-semibold md:text-2xl">Dashboard</h1>
 
             {isLoading ? (
                 <p>Carregando estatísticas...</p>
             ) : (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {/* ... seus cards de estatísticas ... */}
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">
-                                Total de Usuários
-                            </CardTitle>
-                            <Users className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{stats?.userCount}</div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">
-                                Total de Veículos
-                            </CardTitle>
-                            <Car className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{stats?.vehicleCount}</div>
-                        </CardContent>
-                    </Card>
+                    {statCards.map((card) => (
+                        <Link href={card.href} key={card.title}>
+                            <Card className="hover:bg-accent hover:text-accent-foreground transition-colors">
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">
+                                        {card.title}
+                                    </CardTitle>
+                                    <card.icon className="h-4 w-4 text-muted-foreground" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{card.count ?? 0}</div>
+                                </CardContent>
+                                <CardFooter>
+                                    <div className="text-xs text-muted-foreground flex items-center gap-1">
+                                        Ver detalhes <ArrowUpRight className="h-3 w-3" />
+                                    </div>
+                                </CardFooter>
+                            </Card>
+                        </Link>
+                    ))}
                 </div>
             )}
-        </>
+        </div>
     );
 }

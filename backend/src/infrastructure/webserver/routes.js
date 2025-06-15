@@ -2,7 +2,6 @@ const express = require('express');
 const authMiddleware = require('../../presentation/middlewares/authMiddleware');
 
 function setupRoutes(app, { userController, vehicleController, maintenanceController }) {
-    console.log('[routes.js] Entrou na função setupRoutes.'); // LOG 3
     const router = express.Router();
 
     // --- Rotas Públicas ---
@@ -14,6 +13,8 @@ function setupRoutes(app, { userController, vehicleController, maintenanceContro
 
     // --- Rotas de Usuário (Protegidas) ---
     router.get('/users', authMiddleware(['admin']), userController.list.bind(userController));
+    router.put('/users/:id', authMiddleware(['admin']), userController.update.bind(userController));
+    router.delete('/users/:id', authMiddleware(['admin']), userController.delete.bind(userController));
 
     // --- Rotas de Veículos (CRUD Completo) ---
     router.post('/vehicles', vehicleController.create.bind(vehicleController));
@@ -23,13 +24,13 @@ function setupRoutes(app, { userController, vehicleController, maintenanceContro
     router.delete('/vehicles/:id', vehicleController.delete.bind(vehicleController));
 
     // --- Rotas de Manutenção (Protegidas) ---
+    router.get('/maintenances', authMiddleware(['admin']), maintenanceController.listAll.bind(maintenanceController));
     router.post('/vehicles/:vehicleId/maintenances', maintenanceController.create.bind(maintenanceController));
     router.get('/vehicles/:vehicleId/maintenances', maintenanceController.listForVehicle.bind(maintenanceController));
     router.put('/maintenances/:id', maintenanceController.update.bind(maintenanceController));
     router.delete('/maintenances/:id', maintenanceController.delete.bind(maintenanceController));
-    // Registra o roteador na aplicação com o prefixo /api
+
     app.use('/api', router);
-    console.log('[routes.js] Roteador configurado com o prefixo /api.'); // LOG 4
 }
 
 module.exports = setupRoutes;

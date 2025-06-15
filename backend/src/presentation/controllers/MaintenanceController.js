@@ -2,6 +2,7 @@ const CreateMaintenance = require('../../application/use-cases/maintenance/Creat
 const ListMaintenancesForVehicle = require('../../application/use-cases/maintenance/ListMaintenancesForVehicle');
 const UpdateMaintenance = require('../../application/use-cases/maintenance/UpdateMaintenance');
 const DeleteMaintenance = require('../../application/use-cases/maintenance/DeleteMaintenance');
+const ListAllMaintenances = require('../../application/use-cases/maintenance/ListAllMaintenances');
 
 class MaintenanceController {
   constructor(maintenanceRepository, vehicleRepository) {
@@ -35,7 +36,7 @@ class MaintenanceController {
       res.status(500).json({ message: error.message });
     }
   }
-  
+
   async update(req, res) {
     try {
       const { id } = req.params;
@@ -60,6 +61,18 @@ class MaintenanceController {
       if (error.message.includes('Acesso negado')) return res.status(403).json({ message: error.message });
       if (error.message.includes('encontrada')) return res.status(404).json({ message: error.message });
       res.status(500).json({ message: error.message });
+    }
+  }
+
+  async listAll(req, res) {
+    try {
+      // O caso de uso já verifica se o usuário é admin
+      const listAllMaintenances = new ListAllMaintenances(this.maintenanceRepository);
+      const maintenances = await listAllMaintenances.execute({ user: req.user });
+      res.status(200).json(maintenances);
+    } catch (error) {
+        if (error.message.includes('Acesso negado')) return res.status(403).json({ message: error.message });
+        res.status(500).json({ message: "Erro ao buscar todas as manutenções." });
     }
   }
 }

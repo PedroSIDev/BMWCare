@@ -33,6 +33,7 @@ function main() {
     const vehicleController = new VehicleController(vehicleRepository, maintenanceRepository);
     const maintenanceController = new MaintenanceController(maintenanceRepository, vehicleRepository);
     
+
     console.log('[index.js] Preparando para configurar as rotas...'); // LOG 1
 
     // GARANTA QUE ESTA LINHA ESTEJA AQUI E NÃO ESTEJA COMENTADA

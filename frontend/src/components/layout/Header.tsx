@@ -1,143 +1,114 @@
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { NavigationMenu, NavigationMenuList, NavigationMenuLink } from "@/components/ui/navigation-menu"
-import { SVGProps } from "react"
-import { CarIcon, HomeIcon, MicIcon, PenIcon, PhoneIcon } from "lucide-react"
+'use client';
 
-const Header = () => {
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Car, Menu } from 'lucide-react';
+
+// Dados dos links de navegação para facilitar a manutenção
+const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "#about", label: "Sobre" },
+    { href: "#members", label: "Membros" },
+    { href: "#services", label: "Serviços" },
+    { href: "#contact", label: "Contato" },
+];
+
+export default function Header() {
+    // Estado para controlar o background do header ao rolar a página
+    const [isScrolled, setIsScrolled] = useState(false);
+    const pathname = usePathname();
+
+    useEffect(() => {
+        const handleScroll = () => {
+            // Se o scroll for maior que 10px, ativa o estado 'isScrolled'
+            setIsScrolled(window.scrollY > 10);
+        };
+
+        // Adiciona o listener de scroll
+        window.addEventListener('scroll', handleScroll);
+
+        // Remove o listener quando o componente for desmontado (boa prática)
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
-        <div id="name">
-            <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6">
-                <Sheet>
-                    <SheetTrigger asChild>
-                        <Button variant="outline" size="icon" className="lg:hidden">
-                            <MenuIcon className="h-6 w-6" />
-                            <span className="sr-only">Toggle navigation menu</span>
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="left">
-                        <Link href="#" prefetch={false}>
-                            <CarIcon className="h-6 w-6" />
-                            <span className="sr-only">Acme Inc</span>
-                        </Link>
-                        <div className="grid gap-2 py-6">
-                            <Link
-                                href="#"
-                                className="flex w-full items-center py-2 text-lg font-semibold text-black bg-transparent border border-white/30 backdrop-blur-md rounded-lg hover:bg-white/10 transition"
-                                prefetch={false}
-                            >
-                                <CarIcon className="h-5 w-5 mr-2 text-white" />
-                                Home
-                            </Link>
-                            <Link
-                                href="#"
-                                className="flex w-full items-center py-2 text-lg font-semibold text-black bg-transparent border border-white/30 backdrop-blur-md rounded-lg hover:bg-white/10 transition"
-                                prefetch={false}
-                            >
-                                <CarIcon className="h-5 w-5 mr-2 text-white" />
-                                Sobre
-                            </Link>
-                            <Link
-                                href="#"
-                                className="flex w-full items-center py-2 text-lg font-semibold text-black bg-transparent border border-white/30 backdrop-blur-md rounded-lg hover:bg-white/10 transition"
-                                prefetch={false}
-                            >
-                                <CarIcon className="h-5 w-5 mr-2 text-white" />
-                                Serviços
-                            </Link>
-                            <Link
-                                href="#"
-                                className="flex w-full items-center py-2 text-lg font-semibold text-black bg-transparent border border-white/30 backdrop-blur-md rounded-lg hover:bg-white/10 transition"
-                                prefetch={false}
-                            >
-                                <CarIcon className="h-5 w-5 mr-2 text-white" />
-                                Contato
-                            </Link>
-                        </div>
-                    </SheetContent>
-                </Sheet>
-                <Link href="#" className="mr-6 hidden lg:flex" prefetch={false}>
-                    <CarIcon className="h-6 w-6 text-white" />
-                    <span className="sr-only">Acme Inc</span>
+        <header
+            className={cn(
+                "sticky top-0 z-50 w-full transition-all duration-300",
+                // Aplica o efeito de vidro fosco quando a página é rolada
+                isScrolled ? "border-b border-border/40 bg-background/95 backdrop-blur-sm" : "bg-transparent"
+            )}
+        >
+            <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+                {/* --- LOGO --- */}
+                <Link href="/" className="flex items-center gap-2 font-bold text-lg text-white">
+                    <Car className="h-6 w-6 text-blue-500" />
+                    <span>BMW Care</span>
                 </Link>
-                <div className="flex w-full justify-center">
-                    <NavigationMenu className="hidden lg:flex">
-                        <NavigationMenuList>
-                            <NavigationMenuLink asChild>
-                                <Link
-                                    href="/"
-                                    className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent border border-white/30 backdrop-blur-md px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10 focus:bg-white/10 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                    prefetch={false}
-                                >
-                                    <HomeIcon className="h-5 w-5 mr-2 text-white" />
-                                    Home
-                                </Link>
-                            </NavigationMenuLink>
-                            <NavigationMenuLink asChild>
-                                <Link
-                                    href="#"
-                                    className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent border border-white/30 backdrop-blur-md px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10 focus:bg-white/10 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                    prefetch={false}
-                                >
-                                    <MicIcon className="h-5 w-5 mr-2 text-white" />
-                                    Sobre
-                                </Link>
-                            </NavigationMenuLink>
-                            <NavigationMenuLink asChild>
-                                <Link
-                                    href="#"
-                                    className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent border border-white/30 backdrop-blur-md px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10 focus:bg-white/10 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                    prefetch={false}
-                                >
-                                    <PenIcon className="h-5 w-5 mr-2 text-white" />
-                                    Serviços
-                                </Link>
-                            </NavigationMenuLink>
-                            <NavigationMenuLink asChild>
-                                <Link
-                                    href="#"
-                                    className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent border border-white/30 backdrop-blur-md px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10 focus:bg-white/10 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                    prefetch={false}
-                                >
-                                    <PhoneIcon className="h-5 w-5 mr-2 text-white" />
-                                    Contato
-                                </Link>
-                            </NavigationMenuLink>
-                        </NavigationMenuList>
-                    </NavigationMenu>
-                </div>
-                <div className="ml-auto">
-                    <Link href="/authpage" passHref>
-                        <Button asChild>
-                            <span className="text-white">Entrar</span>
+
+                {/* --- NAVEGAÇÃO DESKTOP --- */}
+                <nav className="hidden items-center gap-6 text-sm md:flex">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className={cn(
+                                "font-medium text-gray-300 transition-colors hover:text-white",
+                                pathname === link.href && "text-white underline underline-offset-4"
+                            )}
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+                </nav>
+
+                {/* --- BOTÕES DE AÇÃO (DIREITA) --- */}
+                <div className="hidden items-center gap-4 md:flex">
+                    <Link href="/authpage">
+                        <Button variant="outline" className="bg-transparent text-white border-white/50 hover:bg-white/10 hover:text-white">
+                            Entrar
                         </Button>
                     </Link>
+                    <Link href="#">
+                        <Button className="bg-blue-600 hover:bg-blue-700">Agendar Serviço</Button>
+                    </Link>
                 </div>
-            </header>
-        </div>
-    )
-}
 
-function MenuIcon(props: SVGProps<SVGSVGElement>) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <line x1="4" x2="20" y1="12" y2="12" />
-            <line x1="4" x2="20" y1="6" y2="6" />
-            <line x1="4" x2="20" y1="18" y2="18" />
-        </svg>
-    )
+                {/* --- MENU MOBILE (SHEET) --- */}
+                <div className="md:hidden">
+                    <Sheet>
+                        <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-white">
+                                <Menu className="h-6 w-6" />
+                                <span className="sr-only">Abrir menu</span>
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="left" className="w-3/4 bg-zinc-950 text-white border-zinc-800">
+                            <div className="flex items-center gap-2 font-bold text-lg mb-8">
+                                <Car className="h-6 w-6 text-blue-500" />
+                                <span>BMW Care</span>
+                            </div>
+                            <nav className="grid gap-4 text-lg">
+                                {navLinks.map((link) => (
+                                    <Link key={link.href} href={link.href} className="font-medium text-gray-300 transition-colors hover:text-white">
+                                        {link.label}
+                                    </Link>
+                                ))}
+                                <hr className="my-4 border-zinc-800" />
+                                <Link href="/authpage">
+                                    <Button variant="outline" className="w-full bg-transparent">Entrar</Button>
+                                </Link>
+                            </nav>
+                        </SheetContent>
+                    </Sheet>
+                </div>
+            </div>
+        </header>
+    );
 }
-
-export default Header;

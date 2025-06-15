@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
+// A sua lógica de middleware aqui em cima continua a mesma
 const SECRET_KEY = new TextEncoder().encode(
   'MinhaBMWSuperSecreta@2025_FinalProject'
 );
@@ -17,35 +18,24 @@ async function getPayloadFromToken(token: string) {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
-  // Lista de rotas que são consideradas públicas (páginas de login/registro)
   const publicPaths = ['/', '/authpage']; 
-
-  // Pega o token do cookie
   const token = request.cookies.get('auth_token')?.value;
 
-  // Lógica para usuários NÃO LOGADOS
   if (!token) {
-    // Se o usuário não está logado e NÃO está tentando acessar uma rota pública,
-    // redireciona para a página de login principal.
     if (!publicPaths.includes(pathname)) {
         return NextResponse.redirect(new URL('/authpage', request.url));
     }
-    // Se ele já está em uma rota pública, permite o acesso.
     return NextResponse.next();
   }
 
-  // Lógica para usuários JÁ LOGADOS
   const payload = await getPayloadFromToken(token);
 
   if (!payload) {
-    // Token inválido, limpa o cookie e manda para o login
     const response = NextResponse.redirect(new URL('/authpage', request.url));
     response.cookies.delete('auth_token');
     return response;
   }
 
-  // Se o usuário logado tentar acessar uma página pública, redireciona para seu dashboard
   if (publicPaths.includes(pathname)) {
       return NextResponse.redirect(new URL(
         payload.role === 'admin' ? '/admin/dashboard' : '/dashboard',
@@ -53,7 +43,6 @@ export async function middleware(request: NextRequest) {
       ));
   }
 
-  // Proteção da rota de admin
   if (pathname.startsWith('/admin') && payload.role !== 'admin') {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
@@ -61,8 +50,17 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
+
+// --- A MUDANÇA ESTÁ AQUI ---
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    /*
+     * Faz o match de todas as rotas, EXCETO as que:
+     * - Começam com /api (rotas de API)
+     * - Começam com /_next/static (arquivos estáticos do Next.js)
+     * - Começam com /_next/image (arquivos de otimização de imagem)
+     * - Contêm um ponto (.), o que geralmente indica um arquivo (ex: .png, .ico, .mp4)
+     */
+    '/((?!api|_next/static|_next/image|.*\\..*).*)',
   ],
-};
+}

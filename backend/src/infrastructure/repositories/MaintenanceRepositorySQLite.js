@@ -30,6 +30,12 @@ class MaintenanceRepositorySQLite extends IMaintenanceRepository {
         return rows.map(row => new Maintenance(row.id, row.description, row.date, row.cost, row.vehicleId));
     }
 
+    findAll() {
+        const stmt = this.db.prepare("SELECT * FROM maintenances");
+        const rows = stmt.all();
+        return rows.map(row => new Maintenance(row.id, row.description, row.date, row.cost, row.vehicleId));
+    }
+
     update(maintenance) {
         const stmt = this.db.prepare("UPDATE maintenances SET description = @description, date = @date, cost = @cost WHERE id = @id");
         const info = stmt.run({

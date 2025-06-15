@@ -1,27 +1,22 @@
 'use client';
 
 import { useState } from "react";
-import { useRouter } from 'next/navigation'; // Importe o useRouter
+import { useRouter } from 'next/navigation';
+import Image from "next/image";
+import Link from "next/link";
 import axios from 'axios';
-import Cookies from 'js-cookie'; // Importe o js-cookie
+import Cookies from 'js-cookie';
 import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ChevronLeft } from "lucide-react";
+import { Car, ArrowLeft } from "lucide-react"; // Importamos o ArrowLeft
 
 export default function AuthPage() {
-    const [email, setEmail] = useState(""); // Pré-preenchido para facilitar o teste
-    const [password, setPassword] = useState(""); // Pré-preenchido
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter(); // Inicialize o router
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,74 +24,64 @@ export default function AuthPage() {
         setIsLoading(true);
 
         try {
-            // 1. Faz a chamada para a API de login
-            const response = await axios.post('http://localhost:3001/api/login', {
-                email,
-                password
-            });
-
-            // 2. Se o login for bem-sucedido, pega o token
+            const response = await axios.post('http://localhost:3001/api/login', { email, password });
             const { token, user } = response.data;
+            Cookies.set('auth_token', token, { expires: 1 / 24, secure: process.env.NODE_ENV === 'production' });
 
-            // 3. Salva o token em um cookie
-            // O cookie será usado pelo Middleware para proteger rotas no servidor
-            Cookies.set('auth_token', token, { expires: 1 / 24 }); // Expira em 1 hora
-
-            // 4. Redireciona para o dashboard
             if (user.role === 'admin') {
-                router.push('/admin/dashboard'); // Redireciona admin
+                router.push('/admin/dashboard');
             } else {
-                router.push('/dashboard'); // Redireciona usuário comum
+                router.push('/dashboard');
             }
         } catch (err) {
-            // 5. Se der erro, mostra a mensagem
             setError("E-mail ou senha inválidos. Tente novamente.");
             console.error(err);
         } finally {
             setIsLoading(false);
         }
     };
+
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700">
-            <Card className="w-full max-w-sm">
-                <CardHeader>
-                    <div className="flex items-center gap-3">
-                        <Button asChild size="icon" className="bg-zinc-950">
-                            <a href="/">
-                                <ChevronLeft />
-                            </a>
-                        </Button>
-                        <div>
-                            <CardTitle>Painel de Login</CardTitle>
-                            <CardDescription>
-                                Faça login para acessar o sistema!
-                            </CardDescription>
-                        </div>
+        <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
+            {/* --- PAINEL DA DIREITA: FORMULÁRIO --- */}
+            {/* Adicionada a classe 'relative' para posicionar o botão de voltar */}
+            <div className="relative flex items-center justify-center py-12 h-screen">
+
+                {/* BOTÃO DE VOLTAR ADICIONADO AQUI */}
+                <Link href="/" passHref>
+                    <Button variant="ghost" className="absolute top-8 left-8">
+                        <ArrowLeft className="h-4 w-4 mr-2" />
+                        Voltar para Home
+                    </Button>
+                </Link>
+
+                <div className="mx-auto grid w-[350px] gap-6">
+                    <div className="grid gap-2 text-center">
+                        <Car className="h-8 w-8 mx-auto text-blue-500" />
+                        <h1 className="text-3xl font-bold">Login</h1>
+                        <p className="text-balance text-muted-foreground">
+                            Insira seu e-mail para acessar o painel
+                        </p>
                     </div>
-                </CardHeader>
-                <CardContent>
                     <form onSubmit={handleSubmit}>
-                        <div className="flex flex-col gap-6">
+                        <div className="grid gap-4">
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
                                     id="email"
                                     type="email"
-                                    placeholder="email@gmail.com"
+                                    placeholder="seu@email.com"
                                     required
                                     value={email}
-                                    onChange={e => setEmail(e.target.value)}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                             <div className="grid gap-2">
                                 <div className="flex items-center">
                                     <Label htmlFor="password">Senha</Label>
-                                    <a
-                                        href="#"
-                                        className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                                    >
+                                    <Link href="#" className="ml-auto inline-block text-sm underline">
                                         Esqueceu sua senha?
-                                    </a>
+                                    </Link>
                                 </div>
                                 <Input
                                     id="password"
@@ -104,23 +89,30 @@ export default function AuthPage() {
                                     placeholder="********"
                                     required
                                     value={password}
-                                    onChange={e => setPassword(e.target.value)}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
+                            {error && (
+                                <p className="text-red-500 text-sm">{error}</p>
+                            )}
+                            <Button type="submit" className="w-full" disabled={isLoading}>
+                                {isLoading ? 'Entrando...' : 'Login'}
+                            </Button>
                         </div>
-                        {error && (
-                            <p className="text-red-500 text-sm mt-4 text-center">{error}</p>
-                        )}
-                        <Button
-                            type="submit"
-                            className="w-full mt-6 h-12 text-base font-semibold"
-                            disabled={isLoading} // Desabilita o botão durante o carregamento
-                        >
-                            {isLoading ? 'Entrando...' : 'Login'}
-                        </Button>
                     </form>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
+
+            {/* --- PAINEL DA ESQUERDA: IMAGEM --- */}
+            <div className="hidden bg-muted lg:block">
+                <Image
+                    src="/images/m4cs.jpg"
+                    alt="Imagem de um carro de luxo"
+                    width="1920"
+                    height="1080"
+                    className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                />
+            </div>
         </div>
     );
 }
