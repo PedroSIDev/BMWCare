@@ -16,6 +16,7 @@ function setupRoutes(app, { userController, vehicleController, maintenanceContro
     router.put('/users/:id', authMiddleware(['admin']), userController.update.bind(userController));
     router.delete('/users/:id', authMiddleware(['admin']), userController.delete.bind(userController));
 
+
     // --- Rotas de Veículos (CRUD Completo) ---
     router.post('/vehicles', vehicleController.create.bind(vehicleController));
     router.get('/vehicles', vehicleController.list.bind(vehicleController));

@@ -31,9 +31,24 @@ class MaintenanceRepositorySQLite extends IMaintenanceRepository {
     }
 
     findAll() {
-        const stmt = this.db.prepare("SELECT * FROM maintenances");
+        const sql = `
+            SELECT
+                m.id,
+                m.description,
+                m.date,
+                m.cost,
+                m.vehicleId,
+                v.model as vehicleModel,
+                v.plate as vehiclePlate
+            FROM
+                maintenances m
+            LEFT JOIN
+                vehicles v ON m.vehicleId = v.id
+            ORDER BY m.date DESC
+        `;
+        const stmt = this.db.prepare(sql);
         const rows = stmt.all();
-        return rows.map(row => new Maintenance(row.id, row.description, row.date, row.cost, row.vehicleId));
+        return rows;
     }
 
     update(maintenance) {

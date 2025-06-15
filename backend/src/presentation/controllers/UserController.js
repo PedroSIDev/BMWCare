@@ -53,17 +53,18 @@ class UserController {
     }
 }
 
-async delete(req, res) {
-    try {
-        const { id } = req.params;
-        const deleteUser = new DeleteUser(this.userRepository);
-        // Passamos o ID do usuário a ser deletado e o ID do admin que está fazendo a ação
-        await deleteUser.execute({ userIdToDelete: id, currentUserId: req.user.id });
-        res.status(200).json({ message: 'Usuário deletado com sucesso.' });
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-}
+  async delete(req, res) {
+      try {
+          const { id } = req.params;
+          const deleteUser = new DeleteUser(this.userRepository);
+          // Passamos o ID do usuário a ser deletado e o ID do admin que está fazendo a ação
+          await deleteUser.execute({ userIdToDelete: id, currentUserId: req.user.id });
+          res.status(200).json({ message: 'Usuário deletado com sucesso.' });
+      } catch (error) {
+          res.status(400).json({ message: error.message });
+      }
+  }
+  
 }
 
 module.exports = UserController;

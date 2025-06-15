@@ -59,11 +59,12 @@ class VehicleRepositorySQLite extends IVehicleRepository {
     }
 
     findAll() {
-    // Adicione o * aqui
-    const stmt = this.db.prepare("SELECT * FROM vehicles");
-    const rows = stmt.all();
-    return rows.map(row => new Vehicle(row.id, row.model, row.year, row.plate, row.ownerId));
-}
+        // Adicione o * aqui
+        const stmt = this.db.prepare("SELECT * FROM vehicles");
+        const rows = stmt.all();
+        return rows.map(row => new Vehicle(row.id, row.model, row.year, row.plate, row.ownerId));
+        
+    }
 }
 
 module.exports = VehicleRepositorySQLite;
