@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend 
+    container_name: bmw-api-container
+    ports:
+      - "3001:3001"
+    environment:
+      - JWT_SECRET=MinhaBMWSuperSecreta@2025_FinalProject
+    volumes:
+      - bmw_db_data:/app/src/infrastructure/database
+
+  frontend:
+    build: ./frontend 
+    container_name: bmw-app-container
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:3001/api
+    depends_on:
+      - backend
+
+volumes:
+  bmw_db_data:
