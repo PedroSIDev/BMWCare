@@ -49,13 +49,12 @@ import { PlusCircle, Pencil, Trash2 } from 'lucide-react';
 import api from '@/lib/api';
 import { toast } from 'sonner';
 
-// Interface para o objeto User
 interface User {
     id: number;
     name: string;
     email: string;
     role: 'admin' | 'user';
-    password?: string; // Senha é opcional, principalmente para edição
+    password?: string;
 }
 
 export default function AdminUsersPage() {
@@ -63,13 +62,11 @@ export default function AdminUsersPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Estados para controlar os modais
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [editingUser, setEditingUser] = useState<User | null>(null);
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
-    // Estado para o formulário de novo usuário
     const [newUser, setNewUser] = useState({ name: '', email: '', password: '', role: 'user' as 'user' | 'admin' });
 
     // --- LÓGICA DE DADOS ---
@@ -95,12 +92,12 @@ export default function AdminUsersPage() {
         e.preventDefault();
         try {
             await api.post('/users', newUser);
-            toast.success(`Usuário "${newUser.name}" criado com sucesso!`); // <-- NOTIFICAÇÃO DE SUCESSO
+            toast.success(`Usuário "${newUser.name}" criado com sucesso!`);
             setIsAddDialogOpen(false);
             setNewUser({ name: '', email: '', password: '', role: 'user' });
             fetchUsers();
         } catch (err) {
-            toast.error("Falha ao adicionar usuário."); // <-- NOTIFICAÇÃO DE ERRO
+            toast.error("Falha ao adicionar usuário.");
             console.error("Falha ao adicionar usuário:", err);
         }
     };
@@ -116,12 +113,12 @@ export default function AdminUsersPage() {
 
         try {
             await api.put(`/users/${editingUser.id}`, userData);
-            toast.success(`Usuário "${editingUser.name}" atualizado com sucesso!`); // <-- NOTIFICAÇÃO DE SUCESSO
+            toast.success(`Usuário "${editingUser.name}" atualizado com sucesso!`);
             setIsEditDialogOpen(false);
             setEditingUser(null);
             fetchUsers();
         } catch (err) {
-            toast.error("Falha ao atualizar usuário."); // <-- NOTIFICAÇÃO DE ERRO
+            toast.error("Falha ao atualizar usuário.");
             console.error("Falha ao atualizar usuário:", err);
         }
     };
@@ -141,7 +138,7 @@ export default function AdminUsersPage() {
     };
 
     const openEditDialog = (user: User) => {
-        setEditingUser({ ...user, password: '' }); // Limpa a senha ao abrir
+        setEditingUser({ ...user, password: '' });
         setIsEditDialogOpen(true);
     };
 

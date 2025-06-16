@@ -13,7 +13,6 @@ import { Wrench, Pencil, Trash2, PlusCircle, Plus } from 'lucide-react';
 import api from '@/lib/api';
 import { toast } from 'sonner';
 
-// --- Tipagens ---
 interface Maintenance {
     id: number;
     description: string;

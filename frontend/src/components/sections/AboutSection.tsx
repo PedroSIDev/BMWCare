@@ -29,7 +29,6 @@ export default function AboutSection() {
         <section id="about" className="w-full py-12 md:py-24 lg:py-32 bg-zinc-950 text-white">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-                    {/* A seção de texto e features à esquerda continua a mesma */}
                     <div className="space-y-4">
                         <div className="inline-block rounded-lg bg-zinc-800 px-3 py-1 text-sm">
                             Nossa Solução
@@ -58,8 +57,8 @@ export default function AboutSection() {
                     {/* --- ÁREA DA IMAGEM ATUALIZADA --- */}
                     <div className="flex items-center justify-center">
                         <Image
-                            src="/images/x6m.jpg" // 1. Caminho para a nova imagem
-                            alt="Veículo BMW em destaque"         // 2. Texto alternativo atualizado
+                            src="/images/x6m.jpg"
+                            alt="Veículo BMW em destaque"
                             width={1200}
                             height={900}
                             className="

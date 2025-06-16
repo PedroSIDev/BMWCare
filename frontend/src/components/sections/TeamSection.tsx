@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Linkedin, Github } from 'lucide-react';
 
 // --- DADOS DA EQUIPE ---
-// Preencha este array com os dados reais do seu grupo!
 const teamMembers = [
     {
         name: "Pedro Henrique",
@@ -16,28 +15,28 @@ const teamMembers = [
     {
         name: "Gabriel Giani",
         role: "Desenvolvedor Frontend",
-        avatarUrl: "/images/avatars/maria-santos.jpg",
+        avatarUrl: "/images/avatars/#.jpg",
         linkedinUrl: "#",
         githubUrl: "#",
     },
     {
         name: "Guilherme Lemos",
         role: "Designer UI/UX",
-        avatarUrl: "/images/avatars/carlos-pereira.jpg",
+        avatarUrl: "/images/avatars/#.jpg",
         linkedinUrl: "#",
         githubUrl: "#",
     },
     {
         name: "Alexandre Brinck",
         role: "Gerente de Projeto",
-        avatarUrl: "/images/avatars/ana-oliveira.jpg",
+        avatarUrl: "/images/avatars/#.jpg",
         linkedinUrl: "#",
         githubUrl: "#",
     },
     {
         name: "Breno Morlin",
         role: "Engenheiro de DevOps",
-        avatarUrl: "/images/avatars/lucas-costa.jpg",
+        avatarUrl: "/images/avatars/#.jpg",
         linkedinUrl: "#",
         githubUrl: "#",
     },

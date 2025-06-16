@@ -10,8 +10,6 @@ class LoginUser {
       throw new Error('Credenciais inválidas.');
     }
 
-    console.log('Usuário encontrado no banco:', user);
-
     const isPasswordValid = await this.authService.comparePasswords(password, user.password);
     if (!isPasswordValid) {
       throw new Error('Credenciais inválidas.');

@@ -10,14 +10,14 @@ export default function HomePage() {
   return (
     <>
       <section className="relative h-screen w-full overflow-hidden">
-        {/* 1. Vídeo de Fundoc */}
+        {/* 1. Vídeo de Fundo */}
         <video
           autoPlay
           loop
           muted
-          playsInline // Essencial para autoplay em dispositivos móveis
+          playsInline
           className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover z-0"
-          src="/videos/bmw.mp4" // Use o nome do seu novo arquivo de vídeo aqui
+          src="/videos/bmw.mp4" 
         >
           Seu navegador não suporta a tag de vídeo.
         </video>
@@ -27,9 +27,7 @@ export default function HomePage() {
 
         {/* 3. Conteúdo da Página */}
         <div className="relative z-20 flex h-full flex-col">
-          {/* Usamos o Header que já criamos */}
           <Header />
-
           {/* Conteúdo Centralizado */}
           <main className="flex flex-grow flex-col items-center justify-center text-center px-4">
             <h1 className="text-white text-4xl md:text-6xl font-bold uppercase tracking-wider drop-shadow-lg animate-fade-in-down">

@@ -32,15 +32,9 @@ function main() {
     const userController = new UserController(userRepository, authService);
     const vehicleController = new VehicleController(vehicleRepository, maintenanceRepository);
     const maintenanceController = new MaintenanceController(maintenanceRepository, vehicleRepository);
-    
 
-    console.log('[index.js] Preparando para configurar as rotas...'); // LOG 1
-
-    // GARANTA QUE ESTA LINHA ESTEJA AQUI E NÃO ESTEJA COMENTADA
     setupRoutes(app, { userController, vehicleController, maintenanceController });
-    
-    console.log('[index.js] Configuração de rotas foi chamada.'); // LOG 2
-    
+        
     // Porta do Backend
     const PORT = process.env.PORT || 3001; 
     app.listen(PORT, () => {

@@ -40,7 +40,7 @@ function main() {
                     if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
                         console.log(`- Usuário com email '${user.email}' já existe. Ignorando.`);
                     } else {
-                        throw error; // Lança outros erros
+                        throw error;
                     }
                 }
             }

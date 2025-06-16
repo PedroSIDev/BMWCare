@@ -14,10 +14,8 @@ import {
 
 export function DynamicBreadcrumb() {
     const pathname = usePathname();
-    // Divide a URL em segmentos, remove o primeiro item vazio
     const segments = pathname.split('/').filter(Boolean);
 
-    // Função para capitalizar a primeira letra
     const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
     return (
@@ -30,7 +28,6 @@ export function DynamicBreadcrumb() {
                 </BreadcrumbItem>
 
                 {segments.map((segment, index) => {
-                    // Constrói o link para cada segmento
                     const href = `/${segments.slice(0, index + 1).join('/')}`;
                     const isLast = index === segments.length - 1;
 
@@ -39,7 +36,6 @@ export function DynamicBreadcrumb() {
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
                                 {isLast ? (
-                                    // O último item não é um link
                                     <BreadcrumbPage>{capitalize(segment)}</BreadcrumbPage>
                                 ) : (
                                     <BreadcrumbLink asChild>

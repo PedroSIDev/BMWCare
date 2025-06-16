@@ -1,19 +1,14 @@
 const Database = require('better-sqlite3');
 const path = require('path');
 
-// Caminho para o nosso arquivo de banco de dados
 const dbPath = path.join(__dirname, 'bmw_maintenance.db');
 
-// Cria ou abre a conexão com o banco de dados.
-// O arquivo é lido e escrito diretamente, não há "saveDatabase()" separado.
 const db = new Database(dbPath, { verbose: console.log });
 
-// Otimização para performance em escritas
 db.pragma('journal_mode = WAL');
 
 function initializeDatabase() {
-    console.log("Conexão com better-sqlite3 estabelecida.");
-    
+
     const createUsersTable = `
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -12,9 +12,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Pencil, Trash2 } from 'lucide-react';
 import api from '@/lib/api';
 import { toast } from "sonner";
-import { format } from 'date-fns'; // Usaremos date-fns para formatar a data, é mais robusto
+import { format } from 'date-fns';
 
-// Tipagem para a Manutenção
+
 interface Maintenance {
     id: number;
     description: string;
@@ -128,7 +128,6 @@ export default function AdminMaintenancesPage() {
                                     </TableRow>
                                 ))
                             ) : (
-                                // MENSAGEM DE LISTA VAZIA
                                 <TableRow>
                                     <TableCell colSpan={5} className="h-24 text-center">
                                         Nenhum registro de manutenção encontrado.

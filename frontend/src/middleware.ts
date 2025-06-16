@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
-// A sua lógica de middleware aqui em cima continua a mesma
 const SECRET_KEY = new TextEncoder().encode(
   'MinhaBMWSuperSecreta@2025_FinalProject'
 );
@@ -51,7 +50,6 @@ export async function middleware(request: NextRequest) {
 }
 
 
-// --- A MUDANÇA ESTÁ AQUI ---
 export const config = {
   matcher: [
     /*

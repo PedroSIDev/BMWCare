@@ -12,6 +12,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/compone
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { DynamicBreadcrumb } from "@/components/dynamic-breadcrumb"
+import { SiBmw } from 'react-icons/si';
 
 import { AdminStatsProvider } from "@/context/AdminStatsContext";
 
@@ -36,10 +37,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="flex h-screen w-full bg-background">
                 {/* --- SIDEBAR PARA DESKTOP --- */}
                 <Sidebar isCollapsed={isCollapsed} className="hidden md:flex">
-                    {/* A MUDANÇA ESTÁ AQUI DENTRO */}
                     <SidebarHeader className="flex items-center justify-between px-3">
                         <Link href="/admin/dashboard" className="flex items-center gap-2 font-semibold">
-                            <Car className="h-6 w-6" />
+                            <SiBmw className="h-6 w-6" />
                             {!isCollapsed && <span>Painel Admin</span>}
                         </Link>
                         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -69,7 +69,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             <SheetContent side="left" className="flex flex-col p-0">
                                 <div className="flex h-14 items-center border-b px-4">
                                     <Link href="/admin/dashboard" className="flex items-center gap-2 font-semibold">
-                                        <Car className="h-6 w-6" />
+                                        <SiBmw className="h-6 w-6" />
                                         <span>Painel Admin</span>
                                     </Link>
                                 </div>

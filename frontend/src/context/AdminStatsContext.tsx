@@ -21,7 +21,6 @@ export function AdminStatsProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Esta função só roda uma vez, quando o layout é carregado
         const fetchData = async () => {
             setIsLoading(true);
             try {
@@ -42,7 +41,7 @@ export function AdminStatsProvider({ children }: { children: ReactNode }) {
             }
         };
         fetchData();
-    }, []); // O array vazio [] garante que isso rode só uma vez
+    }, []);
 
     return (
         <AdminStatsContext.Provider value={{ stats, isLoading }}>

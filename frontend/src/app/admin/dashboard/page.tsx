@@ -1,15 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useAdminStats } from '@/context/AdminStatsContext'; // 1. Importa o hook
+import { useAdminStats } from '@/context/AdminStatsContext';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Users, Car, Wrench, ArrowUpRight } from 'lucide-react';
 
 export default function AdminDashboardPage() {
-    // 2. USA O HOOK para pegar os dados do "cofre" (Contexto)
     const { stats, isLoading } = useAdminStats();
-
-    // 3. NOTE: Não há mais useState ou useEffect aqui!
 
     const statCards = [
         {

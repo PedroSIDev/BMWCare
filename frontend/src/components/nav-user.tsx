@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { LogOut, Settings } from "lucide-react"
 
-// A única propriedade que este componente precisa agora é a função onLogout
 type NavUserProps = {
     onLogout: () => void
 }

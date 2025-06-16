@@ -6,9 +6,9 @@ import { usePathname } from 'next/navigation';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Car, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
+import { SiBmw } from 'react-icons/si';
 
-// Dados dos links de navegação para facilitar a manutenção
 const navLinks = [
     { href: "/", label: "Home" },
     { href: "#about", label: "Sobre" },
@@ -17,20 +17,16 @@ const navLinks = [
 ];
 
 export default function Header() {
-    // Estado para controlar o background do header ao rolar a página
     const [isScrolled, setIsScrolled] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
         const handleScroll = () => {
-            // Se o scroll for maior que 10px, ativa o estado 'isScrolled'
             setIsScrolled(window.scrollY > 10);
         };
 
-        // Adiciona o listener de scroll
         window.addEventListener('scroll', handleScroll);
 
-        // Remove o listener quando o componente for desmontado (boa prática)
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
@@ -40,14 +36,13 @@ export default function Header() {
         <header
             className={cn(
                 "sticky top-0 z-50 w-full transition-all duration-300",
-                // Aplica o efeito de vidro fosco quando a página é rolada
                 isScrolled ? "border-b border-border/40 bg-background/95 backdrop-blur-sm" : "bg-transparent"
             )}
         >
             <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
                 {/* --- LOGO --- */}
                 <Link href="/" className="flex items-center gap-2 font-bold text-lg text-white">
-                    <Car className="h-6 w-6 text-blue-500" />
+                    <SiBmw className="h-6 w-6" />
                     <span>BMW Care</span>
                 </Link>
 
@@ -74,7 +69,7 @@ export default function Header() {
                             Entrar
                         </Button>
                     </Link>
-                    <Link href="#">
+                    <Link href="#contact">
                         <Button className="bg-blue-600 hover:bg-blue-700">Agendar Serviço</Button>
                     </Link>
                 </div>
@@ -90,7 +85,7 @@ export default function Header() {
                         </SheetTrigger>
                         <SheetContent side="left" className="w-3/4 bg-zinc-950 text-white border-zinc-800">
                             <div className="flex items-center gap-2 font-bold text-lg mb-8">
-                                <Car className="h-6 w-6 text-blue-500" />
+                                <SiBmw className="h-6 w-6" />
                                 <span>BMW Care</span>
                             </div>
                             <nav className="grid gap-4 text-lg">
