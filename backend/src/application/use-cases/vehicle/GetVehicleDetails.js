@@ -10,14 +10,12 @@ class GetVehicleDetails {
       throw new Error('Veículo não encontrado.');
     }
 
-    // REGRA DE NEGÓCIO: Ou você é admin, ou o veículo é seu.
     if (user.role !== 'admin' && vehicle.ownerId !== user.id) {
       throw new Error('Acesso negado.');
     }
 
     const maintenances = await this.maintenanceRepository.findByVehicleId(vehicleId);
 
-    // Retorna o veículo com suas manutenções aninhadas
     return { ...vehicle, maintenances };
   }
 }

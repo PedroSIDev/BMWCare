@@ -15,7 +15,6 @@ class LoginUser {
       throw new Error('Credenciais inválidas.');
     }
     const token = this.authService.generateToken(user);
-    // Não retornamos a senha do usuário
     const { password: _, ...userWithoutPassword } = user;
     return { user: userWithoutPassword, token };
   }

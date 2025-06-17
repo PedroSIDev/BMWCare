@@ -12,7 +12,6 @@ class UpdateMaintenance {
 
     const vehicle = await this.vehicleRepository.findById(maintenance.vehicleId);
     if (!vehicle) {
-      // Isso não deveria acontecer se os dados estiverem consistentes
       throw new Error('Veículo associado à manutenção não foi encontrado.');
     }
 

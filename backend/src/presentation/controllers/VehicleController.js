@@ -10,20 +10,15 @@ class VehicleController {
     this.maintenanceRepository = maintenanceRepository;
   }
 
-  // MÉTODO CREATE ATUALIZADO
   async create(req, res) {
     try {
-      // Agora pegamos também o ownerId que pode vir do corpo da requisição
       const { model, year, plate, ownerId: ownerIdFromRequest } = req.body;
 
       let ownerId;
 
-      // Lógica de permissão para definir o dono
       if (req.user.role === 'admin' && ownerIdFromRequest) {
-        // Se o requisitante é admin e especificou um dono, usamos o especificado.
         ownerId = ownerIdFromRequest;
       } else {
-        // Para todos os outros casos, o dono é o próprio usuário logado.
         ownerId = req.user.id;
       }
 
@@ -35,8 +30,6 @@ class VehicleController {
       res.status(400).json({ message: error.message });
     }
   }
-
-  // ... (seus outros métodos: list, getDetails, update, delete) permanecem iguais
   
   async list(req, res) {
     try {

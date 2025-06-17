@@ -4,7 +4,6 @@ class DeleteUser {
     }
 
     async execute({ userIdToDelete, currentUserId }) {
-        // Regra de segurança importantíssima: um admin não pode se auto-deletar.
         if (userIdToDelete === currentUserId) {
             throw new Error('Um administrador não pode excluir a própria conta.');
         }

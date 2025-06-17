@@ -18,7 +18,6 @@ function authMiddleware(roles = []) {
 
     req.user = { id: decoded.id, role: decoded.role };
 
-    // Se a rota exige roles específicas, verificamos se o usuário a possui
     if (roles.length > 0 && !roles.includes(decoded.role)) {
         return res.status(403).json({ message: "Acesso negado." });
     }

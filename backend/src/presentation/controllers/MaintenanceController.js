@@ -66,7 +66,6 @@ class MaintenanceController {
 
   async listAll(req, res) {
     try {
-      // O caso de uso já verifica se o usuário é admin
       const listAllMaintenances = new ListAllMaintenances(this.maintenanceRepository);
       const maintenances = await listAllMaintenances.execute({ user: req.user });
       res.status(200).json(maintenances);
