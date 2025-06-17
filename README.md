@@ -1,5 +1,10 @@
+<p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/BMW_logo_%28gray%29.svg" alt="Logo da BMW" width="120"/>
+</p>
 
-# 🚗 BMW Care - Sistema de Gerenciamento de Manutenções
+<h1 align="center">
+  BMW Care - Sistema de Gerenciamento de Manutenções
+</h1>
 
 <div align="center">
   <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
@@ -18,6 +23,14 @@
     <img src="https://img.shields.io/badge/Acessar%20Aplicação-007BFF?style=for-the-badge&logo=vercel&logoColor=white" alt="Acessar Aplicação" />
   </a>
 </div>
+
+## BMW Care - Demonstração
+
+[![Demonstração do BMW Care V1](https://github.com/PedroSIDev/BMWCare/blob/main/img.png)](https://www.linkedin.com/feed/update/urn:li:activity:7340408539980390401/)
+
+<p align="center">
+  <em>Clique na imagem para assistir à demonstração completa.</em>
+</p>
 
 ## 📝 Descrição do Projeto
 
