@@ -34,7 +34,6 @@ class VehicleRepositorySQLite extends IVehicleRepository {
     }
 
     delete(id) {
-        // better-sqlite3 pode executar múltiplas sentenças em uma transação para segurança
         const deleteFn = this.db.transaction(() => {
             this.db.prepare("DELETE FROM maintenances WHERE vehicleId = ?").run(id);
             const info = this.db.prepare("DELETE FROM vehicles WHERE id = ?").run(id);
@@ -48,18 +47,17 @@ class VehicleRepositorySQLite extends IVehicleRepository {
 
     findById(id) {
         const stmt = this.db.prepare("SELECT * FROM vehicles WHERE id = ?");
-        const row = stmt.get(id); // .get() para um único resultado
+        const row = stmt.get(id); 
         return row ? new Vehicle(row.id, row.model, row.year, row.plate, row.ownerId) : null;
     }
 
     findByOwnerId(ownerId) {
         const stmt = this.db.prepare("SELECT * FROM vehicles WHERE ownerId = ?");
-        const rows = stmt.all(ownerId); // .all() para múltiplos resultados
+        const rows = stmt.all(ownerId); 
         return rows.map(row => new Vehicle(row.id, row.model, row.year, row.plate, row.ownerId));
     }
 
     findAll() {
-        // Adicione o * aqui
         const stmt = this.db.prepare("SELECT * FROM vehicles");
         const rows = stmt.all();
         return rows.map(row => new Vehicle(row.id, row.model, row.year, row.plate, row.ownerId));

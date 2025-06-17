@@ -15,7 +15,6 @@ class UpdateVehicle {
       throw new Error('Acesso negado. Apenas administradores podem atualizar veículos.');
     }
 
-    // Atualiza o objeto com os novos dados
     Object.assign(vehicle, updates);
 
     return this.vehicleRepository.update(vehicle);

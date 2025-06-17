@@ -1,18 +1,16 @@
 const bcrypt = require('bcryptjs');
-// Importa a conexão direta do nosso novo arquivo de configuração
 const { db, initializeDatabase } = require('./src/infrastructure/database/sqlite-database');
+
+//Script com HARDCODE para apresentação do projeto!!!
 
 function main() {
     try {
-        // 1. Garante que as tabelas existam
         initializeDatabase();
         
-        // 2. Prepara o comando de inserção de usuário
         const insertUserStmt = db.prepare(
             "INSERT INTO users (name, email, password, role) VALUES (@name, @email, @password, @role)"
         );
 
-        // 3. Define os dados dos usuários
         const usersToInsert = [
             {
                 name: 'Admin User',
@@ -30,7 +28,6 @@ function main() {
 
         console.log('Inserindo usuários iniciais...');
         
-        // 4. Insere cada usuário dentro de uma transação
         const insertMany = db.transaction((users) => {
             for (const user of users) {
                 try {
@@ -53,7 +50,6 @@ function main() {
     } catch (error) {
         console.error('\nFalha ao executar o script de inicialização:', error.message);
     } finally {
-        // 5. Fecha a conexão com o banco
         if (db) {
             db.close();
             console.log('Conexão com o banco de dados fechada.');
