@@ -38,7 +38,7 @@ export default function AuthPage() {
 
         const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-        const loginUrl = `${apiUrl}/api/login`;
+        const loginUrl = `${apiUrl}/login`;
 
         try {
             const response = await axios.post(loginUrl, { email, password });
