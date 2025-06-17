@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
-const jwtSecret = process.env.API_KEY;
+const jwtSecret = process.env.JWT_SECRET;
 
 if (!jwtSecret) {
-  throw new Error('A variável de ambiente API_KEY não está definida.');
+  throw new Error('A variável de ambiente JWT_SECRET não está definida.');
 }
 
 // 3. Converta a chave para o formato que a biblioteca 'jose' espera
