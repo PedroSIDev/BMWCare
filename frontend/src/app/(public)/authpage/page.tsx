@@ -36,8 +36,12 @@ export default function AuthPage() {
         setError("");
         setIsLoading(true);
 
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+        const loginUrl = `${apiUrl}/login`;
+
         try {
-            const response = await axios.post('http://localhost:3001/api/login', { email, password });
+            const response = await axios.post(loginUrl, { email, password });
             const { token, user } = response.data;
             Cookies.set('auth_token', token, { expires: 1 / 24, secure: process.env.NODE_ENV === 'production' });
 
