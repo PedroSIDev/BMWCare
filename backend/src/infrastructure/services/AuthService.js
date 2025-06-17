@@ -1,7 +1,8 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-const JWT_SECRET = 'MinhaBMWSuperSecreta@2025_FinalProject';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 class AuthService {
   async hashPassword(password) {

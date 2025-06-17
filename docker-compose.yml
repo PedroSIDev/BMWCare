@@ -1,23 +1,23 @@
-version: '3.8'
 
 services:
   backend:
-    build: ./backend 
+    build: ./backend
     container_name: bmw-api-container
     ports:
       - "3001:3001"
     environment:
-      - JWT_SECRET=MinhaBMWSuperSecreta@2025_FinalProject
+      # Lê a variável do arquivo .env
+      - JWT_SECRET=${JWT_SECRET}
     volumes:
       - bmw_db_data:/app/src/infrastructure/database
 
   frontend:
-    build: ./frontend 
+    build: ./frontend
     container_name: bmw-app-container
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://backend:3001/api
+      - jwt_secret=${API_KEY}
     depends_on:
       - backend
 

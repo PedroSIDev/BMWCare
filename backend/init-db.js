@@ -17,7 +17,7 @@ function main() {
             {
                 name: 'Admin User',
                 email: 'admin@bmw.com',
-                password: bcrypt.hashSync('admin123', 10), // Usando hashSync para simplicidade no script
+                password: bcrypt.hashSync('admin123', 10),
                 role: 'admin'
             },
             {
