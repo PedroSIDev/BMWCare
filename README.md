@@ -1,3 +1,4 @@
+
 # 🚗 BMW Care - Sistema de Gerenciamento de Manutenções
 
 <div align="center">
@@ -6,6 +7,16 @@
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+</div>
+
+<br>
+
+<div align="center">
+  <strong>Acesse a aplicação completa, com deploy do frontend e backend:</strong>
+  <br>
+  <a href="https://bmw-care.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/Acessar%20Aplicação-007BFF?style=for-the-badge&logo=vercel&logoColor=white" alt="Acessar Aplicação" />
+  </a>
 </div>
 
 ## 📝 Descrição do Projeto
@@ -18,14 +29,23 @@ A aplicação conta com dois níveis de acesso:
 
 ---
 
-## ✨ Principais Funcionalidades
+## ✨ Funcionalidades Detalhadas
 
-* **Autenticação Segura:** Sistema de login com JWT (JSON Web Tokens).
-* **Controle de Acesso por Cargo:** Rotas e funcionalidades distintas para `Admin` e `User`.
-* **Painel de Admin Completo:** CRUD (Criar, Ler, Atualizar, Deletar) de Usuários, Veículos e Manutenções.
-* **Painel de Usuário Intuitivo:** Visualização da "garagem" pessoal e gestão do histórico de cada veículo.
-* **Interface Moderna e Responsiva:** Frontend construído com Next.js e Shadcn/ui, garantindo uma ótima experiência em desktop e mobile.
-* **Notificações em Tempo Real:** Feedback visual com Toasts para o usuário após ações de CRUD.
+#### Gerais
+- **Login Seguro:** Autenticação baseada em JWT para proteger rotas e dados.
+- **Interface Responsiva:** Experiência de usuário otimizada para desktop, tablets e smartphones.
+- **Notificações em Tempo Real:** Feedback visual com Toasts para o usuário após ações de CRUD.
+
+#### Usuário Comum
+- **Gerenciamento de Garagem:** Adicione, visualize, edite e remova seus próprios veículos.
+- **Histórico de Manutenção:** Crie e delete registros de manutenção para cada um de seus veículos, mantendo um histórico completo.
+- **Painel Intuitivo:** Uma visão clara de todos os seus veículos e acesso rápido às suas manutenções.
+
+#### Administrador
+- **Gestão Total de Usuários:** Crie, visualize, edite e remova qualquer usuário da plataforma.
+- **Visão Completa de Veículos:** Acesse e gerencie todos os veículos cadastrados no sistema, independentemente do proprietário.
+- **Controle Total de Manutenções:** Visualize e gerencie todos os registros de manutenção da plataforma.
+- **Painel Administrativo Dedicado:** Interfaces exclusivas para facilitar a administração geral do sistema.
 
 ---
 
@@ -47,9 +67,6 @@ A aplicação conta com dois níveis de acesso:
 * **Requisições API:** Axios
 * **Notificações:** Sonner
 
-#### **Deployment**
-* **Containerização:** Docker & Docker Compose
-
 ---
 
 ## 🧅 Visão Geral da Arquitetura
@@ -65,18 +82,22 @@ Essa estrutura garante que o coração da aplicação (a lógica de negócio) se
 
 ---
 
-## 🚀 Como Rodar o Projeto com Docker (Recomendado)
+## 🛠️ Instalação e Deploy
+
+Você pode executar o projeto de duas maneiras: utilizando Docker (recomendado para uma experiência "plug-and-play") ou configurando os ambientes de backend e frontend manualmente.
+
+### 🐳 Via Docker (Recomendado)
 
 Esta é a forma mais simples e garantida de executar o projeto completo para avaliação.
 
-#### **Pré-requisito:**
+**Pré-requisito:**
 * Ter o [**Docker Desktop**](https://www.docker.com/products/docker-desktop/) instalado e em execução na sua máquina.
 
-#### **Instruções:**
+**Instruções:**
 
 1.  **Clone o repositório:**
     ```bash
-    git clone https://github.com/PedroSIDev/BMWCare.git
+    git clone [https://github.com/PedroSIDev/BMWCare.git](https://github.com/PedroSIDev/BMWCare.git)
     ```
 
 2.  **Navegue até a raiz do projeto clonado:**
@@ -94,18 +115,104 @@ Esta é a forma mais simples e garantida de executar o projeto completo para ava
 4.  **Acesse a aplicação:**
     Abra seu navegador e acesse `http://localhost:3000`.
 
-A aplicação completa estará no ar, com o frontend e o backend se comunicando.
+### 🔧 Localmente (Para Desenvolvimento)
 
----
+Para rodar os ambientes separadamente, você precisará de dois terminais.
+
+**1. Configurando o Backend:**
+```bash
+# Navegue para a pasta do backend
+cd BMWCare/backend
+
+# Instale as dependências
+npm install
+
+# Crie um arquivo .env e adicione a variável JWT_SECRET
+# Ex: JWT_SECRET="seu_segredo_super_secreto"
+
+# Inicie o servidor do backend
+npm start
+# O servidor estará rodando em http://localhost:3001
+````
+
+**2. Configurando o Frontend:**
+
+```bash
+# Em um novo terminal, navegue para a pasta do frontend
+cd BMWCare/frontend
+
+# Instale as dependências
+npm install
+
+# Crie um arquivo .env.local e adicione as variáveis necessárias
+# NEXT_PUBLIC_API_URL="http://localhost:3001/api"
+# JWT_SECRET="seu_segredo_super_secreto" (deve ser o mesmo do backend)
+
+# Inicie o servidor de desenvolvimento
+npm run dev
+# A aplicação estará disponível em http://localhost:3000
+```
+
+-----
+
+## 📡 Endpoints da API
+
+A API segue os padrões RESTful. Todas as rotas, exceto login, são prefixadas com `/api` e protegidas, exigindo um token JWT no cabeçalho `Authorization`.
+
+| Método HTTP | Endpoint | Descrição | Acesso |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/login` | Autentica um usuário e retorna um token JWT. | Público |
+| `POST` | `/api/users/register`| Cria um novo usuário (disponível apenas para admins). | Admin |
+| `GET` | `/api/users` | Lista todos os usuários. | Admin |
+| `DELETE`| `/api/users/:id` | Deleta um usuário específico. | Admin |
+| `GET` | `/api/vehicles` | Lista veículos (usuário vê os seus, admin vê todos).| User, Admin|
+| `POST` | `/api/vehicles` | Cadastra um novo veículo para o usuário logado. | User, Admin|
+| `DELETE`| `/api/vehicles/:id`| Deleta um veículo específico. | User, Admin|
+| `POST` | `/api/maintenances`| Adiciona um registro de manutenção a um veículo. | User, Admin|
+| `GET` | `/api/maintenances/vehicle/:vehicleId` | Lista todas as manutenções de um veículo. | User, Admin|
+| `DELETE`| `/api/maintenances/:id` | Deleta um registro de manutenção. | User, Admin|
+
+-----
+
+## 👨‍💻 Exemplo de Uso
+
+Para testar a aplicação, você pode seguir este fluxo:
+
+1.  **Acesse a Aplicação:**
+
+      * Vá para `http://localhost:3000` (se estiver rodando localmente) ou [https://bmw-care.vercel.app/](https://bmw-care.vercel.app/).
+
+2.  **Login como Administrador:**
+
+      * A base de dados é inicializada com um usuário administrador padrão. Utilize as seguintes credenciais para fazer login:
+          * **Email:** `admin@bmw.com`
+          * **Senha:** `admin123`
+
+3.  **Navegue pelo Painel de Admin:**
+
+      * No dashboard, você terá acesso total. Experimente criar um novo usuário clicando no botão correspondente. Por exemplo:
+          * **Email:** `usuario@teste.com`
+          * **Senha:** `senha123`
+
+4.  **Login como Usuário Comum:**
+
+      * Faça logout da conta de administrador.
+      * Acesse novamente a página de login e entre com as credenciais do novo usuário que você acabou de criar.
+
+5.  **Gerencie sua Garagem:**
+
+      * Você será redirecionado para o dashboard de usuário.
+      * Adicione um novo veículo à sua garagem.
+      * Selecione o veículo recém-criado para visualizar seu histórico e adicione um novo registro de manutenção.
+
+-----
 
 ## 🎯 Desafios e Aprendizados
 
-O desenvolvimento deste sistema apresentou desafios que foram cruciais para o aprendizado da equipe:
+O desenvolvimento deste sistema apresentou desafios que foram cruciais para o aprendizado:
 
-* **Adotando a Arquitetura em Cebola:** O maior desafio conceitual foi aplicar rigorosamente a inversão de dependência. O resultado foi um backend desacoplado, testável e cuja biblioteca de banco de dados pôde ser trocada (de `sql.js` para `better-sqlite3`) sem impactar a lógica de negócio.
+  * **Adotando a Arquitetura em Cebola:** O maior desafio conceitual foi aplicar rigorosamente a inversão de dependência. O resultado foi um backend desacoplado, testável e cuja biblioteca de banco de dados pôde ser trocada (de `sql.js` para `better-sqlite3`) sem impactar a lógica de negócio.
 
-* **Problemas de Hospedagem:** A tentativa inicial de hospedar em plataformas PaaS modernas falhou devido à natureza de arquivo do SQLite. Isso nos levou a aprender e implementar uma solução com **Docker e Docker Compose**, que encapsula toda a aplicação e suas dependências, garantindo que ela rode de forma consistente em qualquer ambiente.
+  * **Problemas de Hospedagem:** A tentativa inicial de hospedar em plataformas PaaS modernas falhou devido à natureza de arquivo do SQLite. Isso nos levou a aprender e implementar uma solução com **Docker e Docker Compose**, que encapsula toda a aplicação e suas dependências, garantindo que ela rode de forma consistente em qualquer ambiente.
 
-* **Experiência de Usuário no Frontend:** Criar um fluxo de estado consistente (como os dados do dashboard que sumiam ao navegar) foi um desafio resolvido com a aplicação de **React Context**, "elevando o estado" para o layout principal e garantindo uma experiência fluida.
-
----
+  * **Experiência de Usuário no Frontend:** Criar um fluxo de estado consistente (como os dados do dashboard que sumiam ao navegar) foi um desafio resolvido com a aplicação de **React Context**, "elevando o estado" para o layout principal e garantindo uma experiência fluida.
