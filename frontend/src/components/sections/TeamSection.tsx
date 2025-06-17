@@ -7,56 +7,56 @@ import { Linkedin, Github } from 'lucide-react';
 const teamMembers = [
     {
         name: "Pedro Henrique",
-        role: "Desenvolvedor Full-Stack",
+        ra: "5162347",
         avatarUrl: "/images/avatars/hero-banner.png",
         linkedinUrl: "https://www.linkedin.com/in/devpedrotech/",
         githubUrl: "https://github.com/PedroSIDev",
     },
     {
         name: "Gabriel Giani",
-        role: "Desenvolvedor Frontend",
+        ra: "5161937",
         avatarUrl: "/images/avatars/#.jpg",
         linkedinUrl: "#",
         githubUrl: "#",
     },
     {
         name: "Guilherme Lemos",
-        role: "Designer UI/UX",
+        ra: "5161304",
         avatarUrl: "/images/avatars/#.jpg",
         linkedinUrl: "#",
         githubUrl: "#",
     },
     {
         name: "Alexandre Brinck",
-        role: "Gerente de Projeto",
+        ra: "5161404",
         avatarUrl: "/images/avatars/#.jpg",
         linkedinUrl: "#",
         githubUrl: "#",
     },
     {
         name: "Breno Morlin",
-        role: "Engenheiro de DevOps",
+        ra: "5161832",
         avatarUrl: "/images/avatars/#.jpg",
         linkedinUrl: "#",
         githubUrl: "#",
     },
     {
         name: "Bruno Gauy",
-        role: "Analista de QA",
+        ra: "5161403",
         avatarUrl: "/images/avatars/bruno.jpg",
         linkedinUrl: "#",
         githubUrl: "#",
     },
     {
         name: "Hebert Lamounier",
-        role: "Desenvolvedor Full-Stack",
+        ra: "5162454",
         avatarUrl: "/images/avatars/hebert.jpg",
         linkedinUrl: "#",
         githubUrl: "#",
     },
     {
         name: "Miguel Garcia",
-        role: "Especialista em Banco de Dados",
+        ra: "5160094",
         avatarUrl: "/images/avatars/miguel.jpg",
         linkedinUrl: "#",
         githubUrl: "#",
@@ -83,7 +83,7 @@ export default function TeamSection() {
                                 <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                             </Avatar>
                             <h3 className="text-xl font-bold">{member.name}</h3>
-                            <p className="text-sm text-muted-foreground">{member.role}</p>
+                            <p className="text-sm text-muted-foreground">{member.ra}</p>
                             <div className="mt-4 flex gap-2">
                                 <Link href={member.githubUrl} target="_blank">
                                     <Button variant="outline" size="icon">
